@@ -377,7 +377,6 @@ while running:
     output.append(list_len)
     for i in range(len(times)):
         output.append(times[i])
-        print(output)
     writer.writerow(output)
 
     running -= 1
