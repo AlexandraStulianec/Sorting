@@ -168,9 +168,10 @@ def RadixSort(arr):
         exp *= 10
 
 
-def BucketSort(arr, noOfBuckets):
+def BucketSort(arr):
     max_ele = max(arr)
     min_ele = min(arr)
+    noOfBuckets = min(len(arr), 10)
 
     rnge = (max_ele - min_ele) / noOfBuckets
 
@@ -187,7 +188,8 @@ def BucketSort(arr, noOfBuckets):
 
         else:
             temp[int((arr[i] - min_ele) / rnge)].append(arr[i])
-            
+
+    # Sort each bucket individually
     for i in range(len(temp)):
         if len(temp[i]) != 0:
             temp[i].sort()
@@ -198,9 +200,48 @@ def BucketSort(arr, noOfBuckets):
             for i in lst:
                 arr[k] = i
                 k = k + 1
+    return arr
 
 
-# INITIAL INPUTS
+MINIMUM = 32
+
+def find_minrun(n):
+    r = 0
+    while n >= MINIMUM:
+        r |= n & 1
+        n >>= 1
+    return n + r
+
+def InsertionSortt(array, left, right):
+    for i in range(left + 1, right + 1):
+        key_item = array[i]
+        j = i - 1
+        while j >= left and array[j] > key_item:
+            array[j + 1] = array[j]
+            j -= 1
+        array[j + 1] = key_item
+
+def TimSort(arr):
+    n = len(arr)
+    minrun = find_minrun(n)
+
+    for start in range(0, n, minrun):
+        end = min(start + minrun - 1, n - 1)
+        InsertionSortt(arr, start, end)
+
+    size = minrun
+    while size < n:
+
+        for left in range(0, n, 2 * size):
+            mid = min(n - 1, left + size - 1)
+            right = min((left + 2 * size - 1), (n - 1))
+            merge(arr, left, mid, right)
+
+        size = 2 * size
+
+
+
+    # INITIAL INPUTS
 
 print("Write a file name (ex: file.csv):")
 f_name = input()
@@ -216,20 +257,19 @@ list_len = int(input())
 f = open(f_name, 'w', newline='')
 writer = csv.writer(f)
 
-header = ["List", "BubbleSort", "SelectionSort", "InsertionSort", "QuickSort", "MergeSort", "HeapSort",
-          "CountingSort", "RadixSort", "BucketSort"]
+header = ["List", "Timsort"]
 writer.writerow(header)
 
 times = []
-output_line = []
+output = []
 a = []
 
 
-while go:
+while running:
 
 
     times.clear()
-    output_line.clear()
+    output.clear()
     a.clear()
 
     # LIST GENERATION
@@ -239,30 +279,22 @@ while go:
         a.append(i)
     random.shuffle(a)
 
+    # ALMOST SORTED
+    for i in range(list_len):
+        a.append(i)
+    mm = random.choice(a)
+    mn = random.choice(a)
+    a[mm],a[mn]=a[mn],a[mm]
+
     # FLAT LISTS
     mm = random.randint(0, 10000)
     mn = mm + random.randint(1,4)
     for i in range(list_len):
         a.append(random.randint(mm, mn))
 
-    # ALMOST SORTED
-    for i in range(list_len):
-        a.append(i)
-    mm = random.choice(a)
-    mn = random.choice(a)
-    #nn = a[mm]
-    #a[mm] = a[mn]
-    #a[mn] = nn
-    a[mm],a[mn]=a[mn],a[mm]
-
     # REVERSE SORTED
     for i in range(list_len):
        a.append(list_len-i-1)
-
-    # SORTED
-    for i in range(list_len):
-        a.append(i)
-    #print(a)
 
 
     # SORT LISTS
@@ -271,19 +303,18 @@ while go:
     # sorting methods on the same list
     # i am using the function time.perf_counter_ns() to get the perfect time in nanoseconds
     # and i converted it to seconds.
+    
     b = a.copy()
     t_start = time.perf_counter_ns()
     BubbleSort(b, len(b))
     t_end = time.perf_counter_ns()
     times.append((t_end - t_start) / 1000000000)
 
-
     b = a.copy()
     t_start = time.perf_counter_ns()
     SelectionSort(b, len(b))
     t_end = time.perf_counter_ns()
     times.append((t_end - t_start) / 1000000000)
-
 
     b = a.copy()
     t_start = time.perf_counter_ns()
@@ -294,20 +325,18 @@ while go:
     # Because of python's recursion depth error I had to do another algorithm for QuickSort
     # bcs it didn't work for more than 1000 elements on certain cases, bcs it it inefficient
     # on those and the recursion it's done multiple times
-
+    
     b = a.copy()
     t_start = time.perf_counter_ns()
     QuickSort(b)
     t_end = time.perf_counter_ns()
     times.append((t_end - t_start) / 1000000000)
 
-
     b = a.copy()
     t_start = time.perf_counter_ns()
     MergeSort(a, 0, len(b) - 1)
     t_end = time.perf_counter_ns()
     times.append((t_end - t_start) / 1000000000)
-
 
     b = a.copy()
     t_start = time.perf_counter_ns()
@@ -332,17 +361,25 @@ while go:
 
     b = a.copy()
     t_start = time.perf_counter_ns()
-    BucketSort(b, list_len // 2)
+    BucketSort(b)
+    t_end = time.perf_counter_ns()
+    times.append((t_end - t_start) / 1000000000)
+
+
+    b = a.copy()
+    t_start = time.perf_counter_ns()
+    TimSort(b)
     t_end = time.perf_counter_ns()
     times.append((t_end - t_start) / 1000000000)
 
     # WRITE TO FILE
 
-    output_line.append(list_len)
+    output.append(list_len)
     for i in range(len(times)):
-        output_line.append(times[i])
-    writer.writerow(output_line)
+        output.append(times[i])
+        print(output)
+    writer.writerow(output)
 
-    go -= 1
+    running -= 1
 
 f.close()
