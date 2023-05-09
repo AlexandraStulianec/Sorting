@@ -257,7 +257,7 @@ list_len = int(input())
 f = open(f_name, 'w', newline='')
 writer = csv.writer(f)
 
-header = ["List", "Timsort"]
+header = ["List","BubbleSort","SlectionSort","InsertionSort","QuickSort","MergeSort","HeapSort","CountingSort","RadixSort","BucketSort","Timsort"]
 writer.writerow(header)
 
 times = []
@@ -265,7 +265,7 @@ output = []
 a = []
 
 
-while running:
+while run:
 
 
     times.clear()
@@ -379,6 +379,6 @@ while running:
         output.append(times[i])
     writer.writerow(output)
 
-    running -= 1
+    run -= 1
 
 f.close()
