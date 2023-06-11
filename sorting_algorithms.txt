@@ -1,0 +1,172 @@
+///BubbleSort
+BubbleSort(arr)
+For i = 1:n,
+    swapped = false
+        for j = n:i+1,
+            if a[j] < a[j-1],
+                swap a[j,j-1]
+    swapped = true
+            break if not swapped
+end BubbleSort
+
+///InsertionSort
+InsertionSort(A)
+for j = 2 to A.length 
+    key = A[j]
+    i = j-1
+    while i greater than n and A[i]>key do
+        A[i + 1] = A[i]
+        i = i-1
+    A[i + 1] = key
+    end while
+end for
+end InsertionSort
+
+///SelectionSort
+SelectionSort(A)
+min = A[L]
+minLoc = L
+ for i = L + 1 to R do
+  if min is greater or equal than A[i] then
+     min = A[i]
+     minLoc = i
+return(minLoc)
+end SelectionSort
+
+///MergeSort
+MergeSort(list, start, end)
+    if start<end then
+        mid = (start + end)/2
+        MergeSort(list, start, mid)
+        MergeSort(list, mid + 1, end)
+        Merge(list, start, mid, end)
+    end if
+end MergeSort
+
+Merge(list, start, mid, end)
+    n1 = mid - start + 1
+    n2 = end - mid
+    letL[1..n1 + 1]and R[1..n2 + 1]be new arrays
+    for i = 1 to n1 do
+        L[i] = A[p + i - 1]
+    end for
+    for i = 1 to n1 do
+        R[i] = A[q + j]
+    end for
+    L[n1 + 1] = inf
+    R[n2 + 1] = inf
+    i = 1
+    j = 1
+    for k = p to r do
+        if L[i] greater or equal than R[j] then
+            A[k] = L[i]
+            i = i + 1
+        else
+            A[k] = R[j]
+            j = j + 1
+        end if
+    end for
+end Merge
+
+///HeapSort
+Heapsort(A)
+    BuildHeap(A)
+        for i = length(A) downto 2
+		      Swap(A[1], A[i])
+		      heap_size(A) -= 1
+		      Heapify(A, 1)
+end Heapsort
+BuildHeap(A)
+    heap_size(A) = length(A)
+    for i = length[A]/2  downto 1
+    Heapify(A, i)
+end BuildHeap
+Heapify(A, i)
+    l = 2*i ; r = 2*i+1
+    if l smaller or equal than heap_size(A) and A[l] greater than A[i] 
+		largest = l
+    else
+		largest = i
+    if r smaller or equal than heap_size(A) && A[r] greater than A[largest]
+		largest = r
+    if (largest != i) 
+		Swap(A, i, largest)
+		Heapify(A, largest)
+end Heapify
+
+///RadixSort
+RadixSort(list)
+    for i = 1 To d do
+        Use a stable sort to sort array A on digit i
+    end for
+end RadixSort
+
+
+///BucketSort
+BucketSort(list)
+let B[0...n-1] be a new array
+    n = list.length
+    for i = 0 to n - 1 do
+        make B[i] an empty list
+    end for
+    for i = 1 to list.length do
+        insert list[i] into B[list.length[i]]
+    end for
+    for i = 0 to n - 1 do
+        sort list B[i] with insertion sort
+    end for
+concatenate the lists B[0], B[1],....,B[n-1] together in order
+end BucketSort
+
+
+///CountingSort
+ContingSort(list, C, k)
+    let C[0..k] be a new array
+    for i = 0 to k do
+        C[i] = 0
+    end for
+    for j = 1 to list.length do
+        C[list[j]] = C[list[j]] + 1
+    end for
+    for i = 1 to k do
+        C[i] = C[i] + C[i - 1]
+    end for
+    for j = list.length downto 1 do
+        B[C[A[j]]] = A[j]
+        C[A[j]] = C[A[J]] - 1
+    end for
+end CountingSort
+
+
+///TimSort
+MINIMUM = 32
+find_minrun(n)
+    r = 0
+    while n >= MINIMUM
+        r |= n & 1
+        n >>= 1
+    return n + r  
+    
+InsertionSortt(array, left, right)
+for i=left + 1 to right + 1
+    key_item = array[i]
+    j = i - 1
+    while j >= left and array[j] > key_item
+        array[j + 1] = array[j]
+        j -= 1
+    array[j + 1] = key_item 
+    
+TimSort(arr)
+n = length(arr)
+minrun = find_minrun(n)
+for start in range(0, n, minrun)
+    end = min(start + minrun - 1, n - 1)
+    InsertionSortt(arr, start, end)
+size = minrun
+while size < n
+    for left in range(0, n, 2 * size):
+        mid = min(n - 1, left + size - 1)
+        right = min((left + 2 * size - 1), (n - 1))
+        merge(arr, left, mid, right) 
+    size = 2 * size
+
